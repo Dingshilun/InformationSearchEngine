@@ -47,7 +47,7 @@ class indexBuilder:
                         wordDict[key].append(0)
                     wordDict[key].append(fileDict[key])
             invertedDict=self.seperator.Splite(fileString,count)
-            print invertedDict
+            #print invertedDict
             for key in invertedDict:
                 if invertedIndex.has_key(key):
                     invertedIndex[key].append(invertedDict[key])
