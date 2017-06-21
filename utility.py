@@ -6,9 +6,9 @@ deleteset= ['\n', '\r', '>', '<', ')', '(', '\"', "\'", '&lt', '-', '+', '@', '%
 
 
 def wordProcess(aString):
-    words = aString.strip('.')
-    words = words.strip(',')
-    words = words.strip('\n')
+    words = aString.replace('.','')
+    words = words.replace(',','')
+    words = words.replace('\n','')
     words = words.lower()
     word = words.split(' ')
     return word

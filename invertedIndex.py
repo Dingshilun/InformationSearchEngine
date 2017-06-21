@@ -44,7 +44,41 @@ class invertedIndex:
         except Exception,E:
             print time.strftime('%Y-%m-%d %H:%M:%S--', time.localtime(time.time())), Exception, ":", E
 
-
+    def sentenceSearch(self,first,second):
+        try:
+            p1=p2=0
+            len1=len(first)
+            len2=len(second)
+            res=[]
+            while p1<len1 and p2<len2:
+                if (first[p1].fileNo==1):
+                    print "wait!"
+                if (first[p1].fileNo==second[p2].fileNo):
+                    l1=len(first[p1].shows)
+                    l2=len(second[p2].shows)
+                    pp1=pp2=0
+                    newShows=[]
+                    while pp1<l1 and pp2<l2:
+                        if (first[p1].shows[pp1]+1==second[p2].shows[pp2]):
+                            newShows.append(second[p2].shows[pp2])
+                            pp1=pp1+1
+                            pp2=pp2+1
+                        elif (first[p1].shows[pp1]<second[p2].shows[pp2]):
+                            pp1=pp1+1
+                        elif (first[p1].shows[pp1]>second[p2].shows[pp2]):
+                            pp2=pp2+1
+                    newSingleList=singleList(first[p1].fileNo,newShows)
+                    res.append(newSingleList)
+                    p1=p1+1
+                    p2=p2+1
+                elif (first[p1].fileNo<second[p2].fileNo):
+                    p1=p1+1
+                elif (first[p1].fileNo>second[p2].fileNo):
+                    p2=p2+1
+            print res
+            return res
+        except Exception, E:
+            print time.strftime('%Y-%m-%d %H:%M:%S--', time.localtime(time.time())), Exception, ":", E
     def boolSearch(self,ops):
         try:
             stackList=[]
@@ -84,8 +118,13 @@ class invertedIndex:
                        stackOp.append(op)
                 else:
                     if self.ini.has_key(op):
-                        stackList.append(self.ini[op])
+                        if (stackList and ops[i-1] not in operator):
+                            stackList.append(self.sentenceSearch(stackList.pop(),self.ini[op]))
+                        else:
+                            stackList.append(self.ini[op])
                     else:
+                        if (stackList and ops[i-1] not in operator):
+                            stackList.pop()
                         stackList.append([])
             while stackOp:
                     #print "done"
