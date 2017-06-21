@@ -20,7 +20,7 @@ def init():
 
 def parse_main(argv):
     parser = argparse.ArgumentParser(description='Search Engine')
-    parser.add_argument('-t', help='generate index and dictionary')
+    parser.add_argument('-t', help='generate index and dictionary, "Reuters/*.html"')
     parser.add_argument('-q', help='query keys')
     parser.add_argument('-k', type=int, help='Top K')
     parser.add_argument('-V', '--vsm', action='store_true', default=True)
