@@ -4,7 +4,7 @@
 import sys
 import builder
 import argparse
-import invertedIndex
+from invertedIndex import invertedIndex
 from wordSeperator import singleList
 import glob
 
@@ -18,13 +18,15 @@ def init():
     a.load()
     return a
 
-def bool_main(fact, query):
+def bool_main(fact, query,ini):
     if query:
         words = query
         words = words.replace('(', ' ( ')
         words = words.replace(')', ' ) ')
         words = words.split()
-        print words
+        for item in ini.boolSearch(words):
+            print item.fileNo,
+        print
     else:
         print 'Missing query keywords'
 
@@ -65,22 +67,24 @@ def parse_main(argv):
             train(args.t)
         else:
             indexFactory = init()
+            ini=invertedIndex(indexFactory.invertedIndex,len(indexFactory.filedict))
             print len(indexFactory.wordSet)
             if args.bool:
-                bool_main(indexFactory, args.q)
+                bool_main(indexFactory, args.q,ini)
             elif args.phrase:
                 phrase_main(indexFactory, args.q)
             elif args.vsm:
                 vsm_main(indexFactory, args.q, k)
     else:
         indexFactory = init()
+        ini=invertedIndex(indexFactory.invertedIndex,len(indexFactory.filedict))
         op = raw_input('operation: ')
         while not op == 'exit':
             tp = raw_input('searching type? ')
             query = raw_input('query words? ')
 
             if tp == 'bool':
-                bool_main(indexFactory, query)
+                bool_main(indexFactory, query,ini)
             elif tp == 'phrase':
                 phrase_main(indexFactory, query)
             elif tp == 'vsm':

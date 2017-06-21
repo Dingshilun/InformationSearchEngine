@@ -86,6 +86,6 @@ class indexBuilder:
         input=open("wordDict.pkl",'rb')
         self.wordDict=cPickle.load(input)
         print "reading fileDictionary"
-        input=open('fileName','rb')
+        input=open('fileName.pkl','rb')
         self.filedict=cPickle.load(input)
 

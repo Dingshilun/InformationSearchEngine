@@ -51,8 +51,8 @@ class invertedIndex:
             len2=len(second)
             res=[]
             while p1<len1 and p2<len2:
-                if (first[p1].fileNo==1):
-                    print "wait!"
+                #if (first[p1].fileNo==1):
+                 #   print "wait!"
                 if (first[p1].fileNo==second[p2].fileNo):
                     l1=len(first[p1].shows)
                     l2=len(second[p2].shows)
@@ -75,7 +75,7 @@ class invertedIndex:
                     p1=p1+1
                 elif (first[p1].fileNo>second[p2].fileNo):
                     p2=p2+1
-            print res
+            #print res
             return res
         except Exception, E:
             print time.strftime('%Y-%m-%d %H:%M:%S--', time.localtime(time.time())), Exception, ":", E
