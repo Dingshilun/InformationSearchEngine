@@ -14,20 +14,26 @@ def init():
     a.load()
     return a
 
-ini=init()
+train()
 
-index=invertedIndex.invertedIndex(ini)
-
+# ini=init()
+# files=glob.glob("/Users/dingshilun/Documents/Senior/searchEngine/Reuters/*.html")
+# index=invertedIndex.invertedIndex(ini.invertedIndex)
 #
-# op=['a','OR','b','AND','c']
-# res=index.boolSearch(op)
-# for r in res:
-#     print r.fileNo
+# a=ini.invertedIndex['review']
+# for item in a:
+#     print item.fileNo,len(item.shows),
 # print
-# op=['NOT','a']
+#
+# op=['bahia','cocoa','review']
 # res=index.boolSearch(op)
 # for r in res:
-#     print r.fileNo
+#    print files[r.fileNo-1],
+# print
+# op=['bahia','AND','cocoa','AND','review']
+# res=index.boolSearch(op)
+# for r in res:
+#     print files[r.fileNo-1],
 # print
 #
 # op=['a','AND','b','AND','c']
@@ -41,4 +47,4 @@ index=invertedIndex.invertedIndex(ini)
 # for r in res:
 #     print r.fileNo
 # print
-#
+

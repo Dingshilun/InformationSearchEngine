@@ -2,11 +2,9 @@ import time;
 import utility
 
 class singleList:
-    def __init__(self,fileNo,address,offset):
+    def __init__(self,fileNo,shows):
         self.fileNo=fileNo
-        self.shows=[]
-        self.shows.append([address,offset])
-
+        self.shows=shows
 class wordSeperator:
 
     def __init__(self):
@@ -19,14 +17,14 @@ class wordSeperator:
             address=0
             offset=0
             for lowerWord in lowerWords:
-                if (lowerWord in utility.deleteset or lowerWord in utility.stopset):
+                if (lowerWord=='' or lowerWord in utility.deleteset or lowerWord in utility.stopset):
                     address=address+1
                     continue
                 if not dictionary.has_key(lowerWord):
-                    temp=singleList(fileNo,address,offset)
+                    temp=singleList(fileNo,[address])
                     dictionary[lowerWord]=temp
                 else:
-                    dictionary[lowerWord].shows.append([address,offset])
+                    dictionary[lowerWord].shows.append(address)
                 offset=offset+len(lowerWord)
                 address=address+1
             #print dictionary
@@ -133,7 +131,7 @@ class wordSeperator:
                     p1=p1+1
                     continue
                 else:
-                    joinedWordList.append(singleList(i,-1,-1))
+                    joinedWordList.append(singleList(i,[-1]))
             return joinedWordList
         except Exception, E:
             print time.strftime('%Y-%m-%d %H:%M:%S--', time.localtime(time.time())), Exception, ":", E

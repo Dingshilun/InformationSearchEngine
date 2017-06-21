@@ -12,11 +12,13 @@ class indexBuilder:
         wordDict={}
         count=0
         invertedIndex={}
+        self.fileName={}
         self.seperator=wordSeperator()
         files=glob.glob(filepath)
         files.sort()
         for file in files:
             print file
+            self.fileName[count]=file
             trainingFile=open(file,'r')
             fileDict={}
             fileString=""
@@ -45,7 +47,7 @@ class indexBuilder:
                         wordDict[key].append(0)
                     wordDict[key].append(fileDict[key])
             invertedDict=self.seperator.Splite(fileString,count)
-            #print invertedDict
+            print invertedDict
             for key in invertedDict:
                 if invertedIndex.has_key(key):
                     invertedIndex[key].append(invertedDict[key])
@@ -71,10 +73,18 @@ class indexBuilder:
         pickle.dump(self.wordSet,output,2)
         output=open("wordDict.pkl",'wb')
         pickle.dump(self.wordDict,output,2)
+        output=open('fileName.pkl','wb')
+        pickle.dump(self.fileName,output,2)
     def load(self):
+        print "reading index"
         input=open('invertedIndex.pkl','rb')
         self.invertedIndex=pickle.load(input)
+        print "reading wordSet"
         input=open("wordSet.pkl",'rb')
         self.wordSet=pickle.load(input)
-        #input=open("wordDict.pkl",'rb')
-        #self.wordDict=pickle.load(input)
+        print "reading dictionary"
+        input=open("wordDict.pkl",'rb')
+        self.wordDict=pickle.load(input)
+        print "reading fileDictionary"
+        input=open('fileName','rb')
+        self.filedict=pickle.load(input)
