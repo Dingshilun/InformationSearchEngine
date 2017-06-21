@@ -1,0 +1,4 @@
+Reuters/
+.DS_Store
+*.pkl
+*.pyc
