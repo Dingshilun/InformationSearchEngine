@@ -10,3 +10,7 @@ def train():
 def init():
     a=builder.indexBuilder()
     a.load()
+    return a
+indexFactory=init()
+
+print len(indexFactory.wordSet)

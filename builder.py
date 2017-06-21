@@ -74,7 +74,7 @@ class indexBuilder:
     def load(self):
         input=open('invertedIndex.pkl','rb')
         self.invertedIndex=pickle.load(input)
-        input=open("wordSet,pkl",'rb')
+        input=open("wordSet.pkl",'rb')
         self.wordSet=pickle.load(input)
-        input=open("wordDict.pkl",'rb')
-        self.wordDict=pickle.load(input)
+        #input=open("wordDict.pkl",'rb')
+        #self.wordDict=pickle.load(input)
