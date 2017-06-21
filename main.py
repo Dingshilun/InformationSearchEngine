@@ -4,9 +4,11 @@
 import sys
 import builder
 import argparse
+import invertedIndex
+from wordSeperator import singleList
+import glob
 
 def train(fn):
-    filepath="Reuters/*.html"
     a=builder.indexBuilder()
     a.buildWordSet(fn)
     a.save()
@@ -58,3 +60,31 @@ def parse_main(argv):
 
 if __name__ == '__main__':
     parse_main(sys.argv[1:])
+
+# ini=init()
+#
+# index=invertedIndex.invertedIndex(ini)
+#
+# op=['a','OR','b','AND','c']
+# res=index.boolSearch(op)
+# for r in res:
+#     print r.fileNo
+# print
+# op=['NOT','a']
+# res=index.boolSearch(op)
+# for r in res:
+#     print r.fileNo
+# print
+#
+# op=['a','AND','b','AND','c']
+# res=index.boolSearch(op)
+# for r in res:
+#     print r.fileNo
+# print
+#
+# op=['(','a','OR','b',')','AND','(','c','OR','b',')']
+# res=index.boolSearch(op)
+# for r in res:
+#     print r.fileNo
+# print
+#
