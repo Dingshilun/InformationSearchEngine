@@ -6,14 +6,13 @@ from __future__ import division
 import math
 import heapq
 import numpy as np
-from collections import OrderedDict
 
 class VSM:
     def __init__(self, dicts):
         # dicts.items ([tfs])
         self.term_count = len(dicts)
         self.doc_count = len(dicts.values()[0])
-        self.dicts = OrderedDict(sorted(dicts.iteritems(), key=lambda d: d[0]))
+        self.dicts = dicts
 
         # Matrix: t x d
         self.tfidf = np.zeros((self.term_count, self.doc_count))
@@ -41,7 +40,12 @@ class VSM:
     def get_scores(self, qvector):
         return np.dot(qvector, self.tfidf)
 
-    def get_topK(self, qvector, k):
+    def get_sorted_scores_list(self, qvector):
+        vec = self.get_scores(qvector)
+        res = [(i, vec[i]) for i in xrange(len(vec))]
+        return sorted(res, reverse=True, key=lambda d: d[1])
+
+    def get_topK_list(self, qvector, k):
         vec = self.get_scores(qvector)
         res = [(i, vec[i]) for i in xrange(len(vec))]
         return heapq.nlargest(k, res, key=lambda d: d[1])
