@@ -2,7 +2,7 @@
 from utility import *
 from wordSeperator import wordSeperator
 import glob
-import pickle
+import cPickle
 class indexBuilder:
     def __init__(self):
         pass
@@ -66,15 +66,15 @@ class indexBuilder:
 
     def save(self):
         output=open("invertedIndex.pkl",'wb')
-        pickle.dump(self.invertedIndex,output,2)
+        cPickle.dump(self.invertedIndex,output,2)
         output=open("wordSet.pkl",'wb')
-        pickle.dump(self.wordSet,output,2)
+        cPickle.dump(self.wordSet,output,2)
         output=open("wordDict.pkl",'wb')
-        pickle.dump(self.wordDict,output,2)
+        cPickle.dump(self.wordDict,output,2)
     def load(self):
         input=open('invertedIndex.pkl','rb')
-        self.invertedIndex=pickle.load(input)
+        self.invertedIndex=cPickle.load(input)
         input=open("wordSet.pkl",'rb')
-        self.wordSet=pickle.load(input)
+        self.wordSet=cPickle.load(input)
         #input=open("wordDict.pkl",'rb')
-        #self.wordDict=pickle.load(input)
+        #self.wordDict=cPickle.load(input)
