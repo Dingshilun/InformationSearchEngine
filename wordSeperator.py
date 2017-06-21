@@ -62,8 +62,8 @@ class wordSeperator:
             len2=len(second)
             while p1<len1 and p2<len2:
                 if (first[p1].fileNo==second[p2].fileNo):
-                    joinedWordList.append(list(first[p1]))
-                    joinedWordList[-1].shows.append(list(second[p2]))
+                    joinedWordList.append(first[p1])
+                    joinedWordList[-1].shows.append(list(second[p2].shows))
                     p1=p1+1
                     p2=p2+1
                 elif(first[p1].fileNo<second[p2].fileNo):
@@ -72,6 +72,12 @@ class wordSeperator:
                 elif(first[p1].fileNo>second[p2].fileNo):
                     joinedWordList.append(second[p2])
                     p2=p2+1
+            while p1<len1:
+                joinedWordList.append(first[p1])
+                p1=p1+1
+            while p2<len2:
+                joinedWordList.append(second[p2])
+                p2=p2+1
             return joinedWordList
         except Exception, E:
             print time.strftime('%Y-%m-%d %H:%M:%S--', time.localtime(time.time())), Exception, ":", E
@@ -84,13 +90,13 @@ class wordSeperator:
             len2=len(second)
             while p1<len1 and p2<len2:
                 if (first[p1].fileNo==second[p2].fileNo):
-                    joinedWordList.append(list(first[p1]))
-                    joinedWordList[-1].shows.append(list(second[p2]))
+                    joinedWordList.append(first[p1])
+                    joinedWordList[-1].shows.append(second[p2].shows)
                     p1=p1+1
                     p2=p2+1
                 elif first[p1].fileNo<second[p2].fileNo:
                     p1=p1+1
-                elif first[p1].fileNo>second[p1].fileNo:
+                elif first[p1].fileNo>second[p2].fileNo:
                     p2=p2+1
             return joinedWordList
         except Exception, E:
@@ -123,7 +129,7 @@ class wordSeperator:
             len1=len(first)
             p1=0
             for i in range(0,fileSum):
-                if i==first[p1].fileNo:
+                if (p1<len1 and i==first[p1].fileNo):
                     p1=p1+1
                     continue
                 else:

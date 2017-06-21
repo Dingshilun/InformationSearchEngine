@@ -19,7 +19,6 @@ class indexBuilder:
             print file
             trainingFile=open(file,'r')
             fileDict={}
-            count=count+1
             fileString=""
             while True:
                 words=trainingFile.readline()
@@ -53,6 +52,7 @@ class indexBuilder:
                 else:
                     invertedIndex[key]=[]
                     invertedIndex[key].append(invertedDict[key])
+            count = count + 1
         self.wordSet=wordSet
         self.wordDict=wordDict
         self.invertedIndex=invertedIndex
