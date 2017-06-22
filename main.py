@@ -19,33 +19,31 @@ def init():
     a.load()
     return a
 
-def bool_main(fact, query,ini, fileName):
+def bool_main(fact, query,ini, fileName, disable_corrrector=False):
     if query:
         words = query
         words = words.replace('(', ' ( ')
         words = words.replace(')', ' ) ')
         words = words.split()
+
+        if not disable_corrrector:
+            words = [fact.corrector.correct(w) for w in words]
         res=ini.boolSearch(words)
         if res:
-            for item in res:
+            for item in ini.boolSearch(words):
                 print fact.filedict[item.fileNo],
             print
         else:
-            print "Nothing found"
+            print "nothing found"
+
     else:
         print 'Missing query keywords'
 
-def phrase_main(fact, query):
-    if query:
-        words = query.split()
-        print words
-    else:
-        print 'Missing query keywords'
-
-def vsm_main(fact, query, k):
+def vsm_main(fact, query, k, disable_corrrector=False):
     if query:
         words = wordProcess(query)
-        words = [fact.corrector.correct(w) for w in words]
+        if not disable_corrrector:
+            words = [fact.corrector.correct(w) for w in words]
         qvector = fact.vsm.query_vector(words)
         ret = fact.vsm.get_topK_list(qvector, k) if k and k > 0 else fact.vsm.get_sorted_scores_list(qvector)
         for item in ret:
@@ -61,8 +59,7 @@ def parse_main(argv):
     parser.add_argument('-k', type=int, help='Top K')
     parser.add_argument('-V', '--vsm', action='store_true', default=True, help="default option")
     parser.add_argument('-B', '--bool', action='store_true')
-    parser.add_argument('-P', '--phrase', action='store_true')
-    parser.add_argument('--disable_corrrector', action='store_true')
+    parser.add_argument('--disable_corrrector', action='store_true', default=False)
 
     args = parser.parse_args(argv)
 
@@ -72,26 +69,21 @@ def parse_main(argv):
         else:
             indexFactory = init()
             ini=invertedIndex(indexFactory.invertedIndex,len(indexFactory.filedict))
-            print len(indexFactory.wordSet)
             if args.bool:
-                bool_main(indexFactory, args.q,ini,indexFactory.filedict)
-            elif args.phrase:
-                phrase_main(indexFactory, args.q)
+                bool_main(indexFactory, args.q,ini,indexFactory.filedict, args.disable_corrrector)
             elif args.vsm:
-                vsm_main(indexFactory, args.q, k)
+                k = args.k if args.k else 0
+                vsm_main(indexFactory, args.q, k, args.disable_corrrector)
     else:
         indexFactory = init()
         ini=invertedIndex(indexFactory.invertedIndex,len(indexFactory.filedict))
         op = raw_input('operation: ')
         while not op == 'exit':
-            tp = raw_input('searching type? ')
             query = raw_input('query words? ')
 
-            if tp == 'bool':
+            if op == 'bool':
                 bool_main(indexFactory, query,ini,indexFactory.filedict)
-            elif tp == 'phrase':
-                phrase_main(indexFactory, query)
-            elif tp == 'vsm':
+            elif op == 'vsm':
                 k = int(raw_input('top K(0 to disable)? '))
                 vsm_main(indexFactory, query, k)
 

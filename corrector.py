@@ -36,7 +36,7 @@ class Corrector:
         candidates = self.known([word]) or self.known(self.edits1(word)) or self.known_edits2(word) or [word]
         ret = max(candidates, key=self.NWORDS.get)
         if word != ret:
-            print 'Correcting: "%s" to "%s"'%(word, ret)
+            print '\033[1;35mCorrecting\033[0m: "%s" to "%s"'%(word, ret)
 
         return ret
 
