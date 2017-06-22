@@ -31,8 +31,10 @@ def bool_main(fact, query,ini, fileName, disable_corrrector=False):
             words = [fact.corrector.correct(w) for w in words]
         res=ini.boolSearch(words)
         if res:
-            for item in ini.boolSearch(words):
+            result = ini.boolSearch(words)
+            for item in result:
                 print fact.filedict[item.fileNo]
+            print '\033[1;35mTotal\033[0m:', len(result)
         else:
             print "nothing found"
 
@@ -45,9 +47,10 @@ def vsm_main(fact, query, k, disable_corrrector=False):
         if not disable_corrrector:
             words = [fact.corrector.correct(w) for w in words]
         qvector = fact.vsm.query_vector(words)
-        ret = fact.vsm.get_topK_list(qvector, k) if k and k > 0 else fact.vsm.get_sorted_scores_list(qvector)
-        for item in ret:
+        result = fact.vsm.get_topK_list(qvector, k) if k and k > 0 else fact.vsm.get_sorted_scores_list(qvector)
+        for item in result:
             print fact.filedict[item[0]]
+        print '\033[1;35mTotal\033[0m:', len(result)
     else:
         print 'Missing query keywords'
 
@@ -61,6 +64,7 @@ def re_main(fact, query):
 
     for item in result:
         print fact.filedict[item]
+    print '\033[1;35mTotal\033[0m:', len(result)
 
 def parse_main(argv):
     parser = argparse.ArgumentParser(description='Search Engine')
