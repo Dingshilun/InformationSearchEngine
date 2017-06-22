@@ -49,7 +49,7 @@ def vsm_main(fact, query, k, disable_corrrector=False):
         qvector = fact.vsm.query_vector(words)
         result = fact.vsm.get_topK_list(qvector, k) if k and k > 0 else fact.vsm.get_sorted_scores_list(qvector)
         for item in result:
-            print fact.filedict[item[0]]
+            print item[1], fact.filedict[item[0]]
         print '\033[1;35mTotal\033[0m:', len(result)
     else:
         print 'Missing query keywords'

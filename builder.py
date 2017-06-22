@@ -12,7 +12,6 @@ class indexBuilder:
 
     def buildWordSet(self,filepath):
         wordSet=set('')
-        wordDict={}
         count=0
         invertedIndex={}
         self.fileName={}
@@ -38,17 +37,6 @@ class indexBuilder:
                             fileDict[w]=1
                         else:
                             fileDict[w]=fileDict[w]+1
-            for key in wordDict:
-                if (fileDict.has_key(key)):
-                    wordDict[key].append(fileDict[key])
-                else:
-                    wordDict[key].append(0)
-            for key in fileDict:
-                if not (wordDict.has_key(key)):
-                    wordDict[key]=[]
-                    for i in range(0,count):
-                        wordDict[key].append(0)
-                    wordDict[key].append(fileDict[key])
             invertedDict=self.seperator.Splite(fileString,count)
             #print invertedDict
             for key in invertedDict:
@@ -59,25 +47,22 @@ class indexBuilder:
                     invertedIndex[key].append(invertedDict[key])
             count = count + 1
         self.wordSet=wordSet
-        self.wordDict=wordDict
+        # self.wordDict=wordDict
         self.invertedIndex=invertedIndex
 
     def getInvertedIndex(self):
         return self.invertedIndex
     def getWordSet(self):
         return self.wordSet
-    def getWordDict(self):
-        return self.wordDict
 
     def save(self):
         output=open("invertedIndex.pkl",'wb')
         cPickle.dump(self.invertedIndex,output,2)
         output=open("wordSet.pkl",'wb')
         cPickle.dump(self.wordSet,output,2)
-        output=open("wordDict.pkl",'wb')
-        cPickle.dump(self.wordDict,output,2)
         output=open('fileName.pkl','wb')
         cPickle.dump(self.fileName,output,2)
+
     def load(self):
         print "reading index"
         input=open('invertedIndex.pkl','rb')
@@ -86,11 +71,10 @@ class indexBuilder:
         input=open("wordSet.pkl",'rb')
         self.wordSet=cPickle.load(input)
         print "reading dictionary"
-        input=open("wordDict.pkl",'rb')
-        self.wordDict=cPickle.load(input)
         print "reading fileDictionary"
         input=open('fileName.pkl','rb')
         self.filedict=cPickle.load(input)
 
-        self.vsm = VSM(self.wordDict)
+        print "loading vsm"
+        self.vsm = VSM(self.invertedIndex, len(self.filedict))
         self.corrector = Corrector('trainer')

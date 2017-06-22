@@ -8,31 +8,32 @@ import heapq
 import numpy as np
 
 class VSM:
-    def __init__(self, dicts):
+    def __init__(self, invertedIndex, doc_count):
         # dicts.items ([tfs])
-        self.term_count = len(dicts)
-        self.doc_count = len(dicts.values()[0])
-        self.dicts = dicts
+        self.term_count = len(invertedIndex)
+        self.dicts = invertedIndex.keys()
 
         # Matrix: t x d
-        self.tfidf = np.zeros((self.term_count, self.doc_count))
+        self.tfidf = np.zeros((self.term_count, doc_count))
         idx = 0
-        for t in self.dicts.itervalues():
-            idf = math.log10(self.doc_count / (self.doc_count - t.count(0)))
-            tfs = np.array([(1 + math.log10(i)) if i > 0 else 0 for i in t])
-            self.tfidf[idx] = tfs * idf
-            # self.tfidf[idx] = tfs
+        for w in invertedIndex.iteritems():
+            idf = math.log10(doc_count / len(w[1]))
+            tfs = np.zeros(doc_count)
+            for doc in w[1]:
+                 tfs[doc.fileNo] = (1 + math.log10(len(doc.shows))) * idf
+
+            self.tfidf[idx] = tfs
             idx += 1
 
         # normalize tfidf
-        for x in xrange(self.doc_count):
+        for x in xrange(doc_count):
             self.tfidf[:,x] = self._normalize(self.tfidf[:,x])
 
     def query_vector(self, query):
         vec = np.zeros(self.term_count)
         for k in query:
-            if self.dicts.has_key(k):
-                vec[self.dicts.keys().index(k)] += 1
+            if k in self.dicts:
+                vec[self.dicts.index(k)] += 1
 
         # normalize query vector
         return self._normalize(vec)
