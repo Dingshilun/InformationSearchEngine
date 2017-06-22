@@ -32,8 +32,7 @@ def bool_main(fact, query,ini, fileName, disable_corrrector=False):
         res=ini.boolSearch(words)
         if res:
             for item in ini.boolSearch(words):
-                print fact.filedict[item.fileNo],
-            print
+                print fact.filedict[item.fileNo]
         else:
             print "nothing found"
 
@@ -48,7 +47,7 @@ def vsm_main(fact, query, k, disable_corrrector=False):
         qvector = fact.vsm.query_vector(words)
         ret = fact.vsm.get_topK_list(qvector, k) if k and k > 0 else fact.vsm.get_sorted_scores_list(qvector)
         for item in ret:
-            print item, fact.filedict[item[0]]
+            print fact.filedict[item[0]]
     else:
         print 'Missing query keywords'
 
@@ -61,7 +60,7 @@ def re_main(fact, query):
                     result.add(i)
 
     for item in result:
-        print item, fact.filedict[item]
+        print fact.filedict[item]
 
 def parse_main(argv):
     parser = argparse.ArgumentParser(description='Search Engine')
@@ -71,6 +70,7 @@ def parse_main(argv):
     parser.add_argument('-k', type=int, help='Top K')
     parser.add_argument('-V', '--vsm', action='store_true', default=True, help="default option")
     parser.add_argument('-B', '--bool', action='store_true')
+    parser.add_argument('-R', '--regex', action='store_true')
     parser.add_argument('--disable_corrrector', action='store_true', default=False)
 
     args = parser.parse_args(argv)
@@ -86,6 +86,8 @@ def parse_main(argv):
             elif args.vsm:
                 k = args.k if args.k else 0
                 vsm_main(indexFactory, args.q, k, args.disable_corrrector)
+            elif args.regex:
+                re_main(indexFactory, query)
     else:
         indexFactory = init()
         ini=invertedIndex(indexFactory.invertedIndex,len(indexFactory.filedict))
