@@ -8,6 +8,7 @@ from invertedIndex import invertedIndex
 from wordSeperator import singleList
 import glob
 from utility import wordProcess
+import re
 
 def train(fn):
     a=builder.indexBuilder()
@@ -45,6 +46,17 @@ def vsm_main(fact, query, k, disable_corrrector=False):
     else:
         print 'Missing query keywords'
 
+def re_main(fact, query):
+    result = set()
+    for w in fact.wordSet:
+        if re.findall(query, w):
+            for i in xrange(len(fact.wordDict[w])):
+                if fact.wordDict[w][i] > 0:
+                    result.add(i)
+
+    for item in result:
+        print item, fact.filedict[item]
+
 def parse_main(argv):
     parser = argparse.ArgumentParser(description='Search Engine')
     parser.add_argument('-I', action='store_true', help='Interactive mode')
@@ -80,6 +92,8 @@ def parse_main(argv):
             elif op == 'vsm':
                 k = int(raw_input('top K(0 to disable)? '))
                 vsm_main(indexFactory, query, k)
+            elif op == 'regex':
+                re_main(indexFactory, query)
 
             op = raw_input('operation: ')
 
