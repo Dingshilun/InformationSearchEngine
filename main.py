@@ -25,9 +25,13 @@ def bool_main(fact, query,ini, fileName):
         words = words.replace('(', ' ( ')
         words = words.replace(')', ' ) ')
         words = words.split()
-        for item in ini.boolSearch(words):
-            print fact.filedict[item.fileNo],
-        print
+        res=ini.boolSearch(words)
+        if res:
+            for item in res:
+                print fact.filedict[item.fileNo],
+            print
+        else:
+            print "Nothing found"
     else:
         print 'Missing query keywords'
 
