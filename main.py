@@ -31,14 +31,7 @@ def bool_main(fact, query,ini, fileName):
     else:
         print 'Missing query keywords'
 
-def phrase_main(fact, query):
-    if query:
-        words = query.split()
-        print words
-    else:
-        print 'Missing query keywords'
-
-def vsm_main(fact, query, k):
+def vsm_main(fact, query, k, disable_corrrector=False):
     if query:
         words = wordProcess(query)
         words = [fact.corrector.correct(w) for w in words]
@@ -57,8 +50,7 @@ def parse_main(argv):
     parser.add_argument('-k', type=int, help='Top K')
     parser.add_argument('-V', '--vsm', action='store_true', default=True, help="default option")
     parser.add_argument('-B', '--bool', action='store_true')
-    parser.add_argument('-P', '--phrase', action='store_true')
-    parser.add_argument('--disable_corrrector', action='store_true')
+    parser.add_argument('--disable_corrrector', action='store_true', default=False)
 
     args = parser.parse_args(argv)
 
@@ -71,23 +63,18 @@ def parse_main(argv):
             print len(indexFactory.wordSet)
             if args.bool:
                 bool_main(indexFactory, args.q,ini,indexFactory.filedict)
-            elif args.phrase:
-                phrase_main(indexFactory, args.q)
             elif args.vsm:
-                vsm_main(indexFactory, args.q, k)
+                vsm_main(indexFactory, args.q, k, args.disable_corrrector)
     else:
         indexFactory = init()
         ini=invertedIndex(indexFactory.invertedIndex,len(indexFactory.filedict))
         op = raw_input('operation: ')
         while not op == 'exit':
-            tp = raw_input('searching type? ')
             query = raw_input('query words? ')
 
-            if tp == 'bool':
+            if op == 'bool':
                 bool_main(indexFactory, query,ini,indexFactory.filedict)
-            elif tp == 'phrase':
-                phrase_main(indexFactory, query)
-            elif tp == 'vsm':
+            elif op == 'vsm':
                 k = int(raw_input('top K(0 to disable)? '))
                 vsm_main(indexFactory, query, k)
 
