@@ -43,7 +43,7 @@ class indexBuilder:
             for key in fileDict:
                 if not (wordDict.has_key(key)):
                     wordDict[key]=[]
-                    for i in range(0,count-1):
+                    for i in range(0,count):
                         wordDict[key].append(0)
                     wordDict[key].append(fileDict[key])
             invertedDict=self.seperator.Splite(fileString,count)
