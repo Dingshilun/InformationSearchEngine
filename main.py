@@ -19,14 +19,14 @@ def init():
     a.load()
     return a
 
-def bool_main(fact, query,ini):
+def bool_main(fact, query,ini, fileName):
     if query:
         words = query
         words = words.replace('(', ' ( ')
         words = words.replace(')', ' ) ')
         words = words.split()
         for item in ini.boolSearch(words):
-            print item.fileNo,
+            print fileName[item.fileNo],
         print
     else:
         print 'Missing query keywords'
@@ -71,7 +71,7 @@ def parse_main(argv):
             ini=invertedIndex(indexFactory.invertedIndex,len(indexFactory.filedict))
             print len(indexFactory.wordSet)
             if args.bool:
-                bool_main(indexFactory, args.q,ini)
+                bool_main(indexFactory, args.q,ini,indexFactory.filedict)
             elif args.phrase:
                 phrase_main(indexFactory, args.q)
             elif args.vsm:
@@ -85,7 +85,7 @@ def parse_main(argv):
             query = raw_input('query words? ')
 
             if tp == 'bool':
-                bool_main(indexFactory, query,ini)
+                bool_main(indexFactory, query,ini,indexFactory.filedict)
             elif tp == 'phrase':
                 phrase_main(indexFactory, query)
             elif tp == 'vsm':
