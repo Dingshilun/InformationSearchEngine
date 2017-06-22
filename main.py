@@ -7,7 +7,7 @@ import argparse
 from invertedIndex import invertedIndex
 from wordSeperator import singleList
 import glob
-import utility
+from utility import wordProcess
 
 def train(fn):
     a=builder.indexBuilder()
@@ -26,7 +26,7 @@ def bool_main(fact, query,ini, fileName):
         words = words.replace(')', ' ) ')
         words = words.split()
         for item in ini.boolSearch(words):
-            print fileName[item.fileNo],
+            print fact.filedict[item.fileNo],
         print
     else:
         print 'Missing query keywords'
@@ -41,12 +41,11 @@ def phrase_main(fact, query):
 def vsm_main(fact, query, k):
     if query:
         words = wordProcess(query)
-        words = [fact.corrector.correct(i) for w in words]
+        words = [fact.corrector.correct(w) for w in words]
         qvector = fact.vsm.query_vector(words)
-        if k and k > 0:
-            fact.vsm.get_topK_list(qvector, k)
-        else:
-            fact.vsm.get_sorted_scores_list(qvector)
+        ret = fact.vsm.get_topK_list(qvector, k) if k and k > 0 else fact.vsm.get_sorted_scores_list(qvector)
+        for item in ret:
+            print item, fact.filedict[item[0]]
     else:
         print 'Missing query keywords'
 
@@ -89,7 +88,7 @@ def parse_main(argv):
             elif tp == 'phrase':
                 phrase_main(indexFactory, query)
             elif tp == 'vsm':
-                k = raw_input('top K(0 to disable)? ')
+                k = int(raw_input('top K(0 to disable)? '))
                 vsm_main(indexFactory, query, k)
 
             op = raw_input('operation: ')
