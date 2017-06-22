@@ -19,12 +19,14 @@ def init():
     a.load()
     return a
 
-def bool_main(fact, query,ini, fileName):
+def bool_main(fact, query,ini, fileName, disable_corrrector=False):
     if query:
         words = query
         words = words.replace('(', ' ( ')
         words = words.replace(')', ' ) ')
         words = words.split()
+        if not disable_corrrector:
+            words = [fact.corrector.correct(w) for w in words]
         for item in ini.boolSearch(words):
             print fact.filedict[item.fileNo],
         print
@@ -34,7 +36,8 @@ def bool_main(fact, query,ini, fileName):
 def vsm_main(fact, query, k, disable_corrrector=False):
     if query:
         words = wordProcess(query)
-        words = [fact.corrector.correct(w) for w in words]
+        if not disable_corrrector:
+            words = [fact.corrector.correct(w) for w in words]
         qvector = fact.vsm.query_vector(words)
         ret = fact.vsm.get_topK_list(qvector, k) if k and k > 0 else fact.vsm.get_sorted_scores_list(qvector)
         for item in ret:
@@ -62,7 +65,7 @@ def parse_main(argv):
             ini=invertedIndex(indexFactory.invertedIndex,len(indexFactory.filedict))
             print len(indexFactory.wordSet)
             if args.bool:
-                bool_main(indexFactory, args.q,ini,indexFactory.filedict)
+                bool_main(indexFactory, args.q,ini,indexFactory.filedict, args.disable_corrrector)
             elif args.vsm:
                 vsm_main(indexFactory, args.q, k, args.disable_corrrector)
     else:
