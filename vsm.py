@@ -15,7 +15,6 @@ class VSM:
         self.dicts = dicts
 
         # Matrix: t x d
-        print self.term_count, self.doc_count
         self.tfidf = np.zeros((self.term_count, self.doc_count))
         idx = 0
         for t in self.dicts.itervalues():

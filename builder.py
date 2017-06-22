@@ -93,4 +93,4 @@ class indexBuilder:
         self.filedict=cPickle.load(input)
 
         self.vsm = VSM(self.wordDict)
-        self.corrector = Corrector('train')
+        self.corrector = Corrector('trainer')
