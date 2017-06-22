@@ -7,6 +7,7 @@ import argparse
 from invertedIndex import invertedIndex
 from wordSeperator import singleList
 import glob
+import utility
 
 def train(fn):
     a=builder.indexBuilder()
@@ -39,13 +40,13 @@ def phrase_main(fact, query):
 
 def vsm_main(fact, query, k):
     if query:
-        words = query.split()
-        ## process word
-        # qvector = fact.vsm.query_vector(words)
-        # if k and k > 0:
-        #     fact.vsm.get_topK_list(qvector, k)
-        # else:
-        #     fact.vsm.get_sorted_scores_list(qvector)
+        words = wordProcess(query)
+        words = [fact.corrector.correct(i) for w in words]
+        qvector = fact.vsm.query_vector(words)
+        if k and k > 0:
+            fact.vsm.get_topK_list(qvector, k)
+        else:
+            fact.vsm.get_sorted_scores_list(qvector)
     else:
         print 'Missing query keywords'
 

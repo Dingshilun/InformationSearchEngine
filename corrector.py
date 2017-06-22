@@ -30,8 +30,15 @@ class Corrector:
         return set(w for w in words if w in self.NWORDS)
 
     def correct(self, word):
+        if any(c.isdigit() for c in word):
+            return word
+
         candidates = self.known([word]) or self.known(self.edits1(word)) or self.known_edits2(word) or [word]
-        return max(candidates, key=self.NWORDS.get)
+        ret = max(candidates, key=self.NWORDS.get)
+        if word != ret:
+            print 'Correcting: "%s" to "%s"'%(word, ret)
+
+        return ret
 
 if __name__ == '__main__':
     c = Corrector('trainer')

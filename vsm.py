@@ -15,10 +15,11 @@ class VSM:
         self.dicts = dicts
 
         # Matrix: t x d
+        print self.term_count, self.doc_count
         self.tfidf = np.zeros((self.term_count, self.doc_count))
         idx = 0
         for t in self.dicts.itervalues():
-            idf = 1 + math.log10(self.doc_count / (self.doc_count - t.count(0)))
+            idf = math.log10(self.doc_count / (self.doc_count - t.count(0)))
             tfs = np.array([(1 + math.log10(i)) if i > 0 else 0 for i in t])
             self.tfidf[idx] = tfs * idf
             # self.tfidf[idx] = tfs

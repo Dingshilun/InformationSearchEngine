@@ -3,6 +3,9 @@ from utility import *
 from wordSeperator import wordSeperator
 import glob
 import cPickle
+from vsm import VSM
+from corrector import Corrector
+
 class indexBuilder:
     def __init__(self):
         pass
@@ -89,3 +92,5 @@ class indexBuilder:
         input=open('fileName.pkl','rb')
         self.filedict=cPickle.load(input)
 
+        self.vsm = VSM(self.wordDict)
+        self.corrector = Corrector('train')
