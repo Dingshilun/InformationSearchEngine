@@ -63,10 +63,10 @@ def parse_main(argv):
         else:
             indexFactory = init()
             ini=invertedIndex(indexFactory.invertedIndex,len(indexFactory.filedict))
-            print len(indexFactory.wordSet)
             if args.bool:
                 bool_main(indexFactory, args.q,ini,indexFactory.filedict, args.disable_corrrector)
             elif args.vsm:
+                k = args.k if args.k else 0
                 vsm_main(indexFactory, args.q, k, args.disable_corrrector)
     else:
         indexFactory = init()
