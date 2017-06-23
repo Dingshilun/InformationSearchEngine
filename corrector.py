@@ -30,7 +30,7 @@ class Corrector:
         return set(w for w in words if w in self.NWORDS)
 
     def correct(self, word):
-        if any(c.isdigit() for c in word):
+        if any(c.isdigit() for c in word) or (word in ['AND','NOT','OR','(',')']):
             return word
 
         candidates = self.known([word]) or self.known(self.edits1(word)) or self.known_edits2(word) or [word]
