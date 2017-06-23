@@ -58,9 +58,8 @@ def re_main(fact, query):
     result = set()
     for w in fact.wordSet:
         if re.findall(query, w):
-            for i in xrange(len(fact.wordDict[w])):
-                if fact.wordDict[w][i] > 0:
-                    result.add(i)
+            for i in xrange(len(fact.invertedIndex[w])):
+                    result.add(fact.invertedIndex[w][i].fileNo)
 
     for item in result:
         print fact.filedict[item]
